@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Engine</string>
+    <string name="hint">Введите фамилию</string>
+</resources>
