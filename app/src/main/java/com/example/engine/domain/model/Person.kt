@@ -1,4 +1,4 @@
-package com.example.engine.model
+package com.example.engine.domain.model
 
 data class Person(val surname: String) {
     companion object {

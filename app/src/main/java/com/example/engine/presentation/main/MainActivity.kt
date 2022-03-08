@@ -1,10 +1,12 @@
-package com.example.engine
+package com.example.engine.presentation.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.example.engine.databinding.ActivityMainBinding
-import com.example.engine.model.Person
+import com.example.engine.domain.model.Person
+import com.example.engine.presentation.core.SpaceItemDecoration
+import com.example.engine.toDpInt
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 
 class MainActivity : AppCompatActivity() {

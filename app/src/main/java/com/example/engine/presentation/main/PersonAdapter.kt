@@ -1,9 +1,8 @@
-package com.example.engine
+package com.example.engine.presentation.main
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.engine.databinding.ItemPersonBinding
-import com.example.engine.model.Person
-import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
+import com.example.engine.domain.model.Person
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 
 fun getPersonAdapterDelegate() = adapterDelegateViewBinding<Person, Person, ItemPersonBinding>(
