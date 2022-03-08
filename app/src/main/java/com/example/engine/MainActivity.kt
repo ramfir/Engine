@@ -2,50 +2,50 @@ package com.example.engine
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import androidx.core.widget.addTextChangedListener
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.engine.databinding.ActivityMainBinding
 import com.example.engine.model.Person
+import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 
 class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
 
-    private val personAdapter = PersonAdapter()
+    private val personAdapter by lazy {
+        AsyncListDifferDelegationAdapter(
+            getPersonDiffCallback(),
+            getPersonAdapterDelegate()
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupRecyclerView()
+        setupView()
         fillData()
-        setupSearchProcess()
     }
 
-    private fun setupRecyclerView() {
+    private fun setupView() {
         with(binding) {
-            recyclerViewPersons.apply {
+            searchPersonMainField.addTextChangedListener { search(it.toString()) }
+            personMainList.apply {
                 adapter = personAdapter
-                addItemDecoration(
-                    DividerItemDecoration(this@MainActivity, LinearLayoutManager.VERTICAL))
+                addItemDecoration(SpaceItemDecoration(space = 5.toDpInt()))
             }
         }
     }
 
     private fun fillData() {
-        personAdapter.submitList(Person.persons)
+        personAdapter.items = Person.persons.toList()
     }
 
-    private fun setupSearchProcess() {
-        binding.editTextSearchSurname.addTextChangedListener { surname ->
-            val filteredList = Person.persons.filter { person ->
-                person.surname.contains(surname.toString(), true)}
-            personAdapter.submitList(filteredList)
+    private fun search(surname: String) {
+        val filteredList = Person.persons.filter { person ->
+            person.surname.contains(surname.toString(), true)
         }
+        personAdapter.items = filteredList.toList()
     }
 }
