@@ -1,35 +1,20 @@
 package com.example.engine
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.example.engine.databinding.ItemPersonBinding
 import com.example.engine.model.Person
+import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
+import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 
-class PersonAdapter : ListAdapter<Person, PersonAdapter.PersonViewHolder>(getDiffCallback()) {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = PersonViewHolder(parent)
-    override fun onBindViewHolder(holder: PersonViewHolder, position: Int) = holder.bind(getItem(position))
-
-    class PersonViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.item_person, parent, false)
-    ) {
-
-        private val binding = ItemPersonBinding.bind(itemView)
-
-        fun bind(person: Person) {
-            with(binding) {
-                textViewSurname.text = person.surname
-            }
-        }
+fun getPersonAdapterDelegate() = adapterDelegateViewBinding<Person, Person, ItemPersonBinding>(
+    { layoutInflater, root -> ItemPersonBinding.inflate(layoutInflater, root, false) }
+) {
+    bind {
+        binding.surnameItemPersonText.text = item.surname
     }
+}
 
-    companion object {
-        private fun getDiffCallback() = object : DiffUtil.ItemCallback<Person>() {
-            override fun areItemsTheSame(oldItem: Person, newItem: Person) = oldItem.surname == newItem.surname
-            override fun areContentsTheSame(oldItem: Person, newItem: Person) = oldItem == newItem
-        }
-    }
+fun getPersonDiffCallback() = object : DiffUtil.ItemCallback<Person>() {
+    override fun areItemsTheSame(oldItem: Person, newItem: Person) = oldItem.surname == newItem.surname
+    override fun areContentsTheSame(oldItem: Person, newItem: Person) = oldItem == newItem
 }
